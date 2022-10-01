@@ -1,0 +1,12 @@
+match
+    $idea isa graphcal-idea;
+    $alias ($idea) isa graphcal-alias;
+    $alias has graphcal-name "<name>";
+    $other_alias ($idea) isa graphcal-alias;
+    $other_alias has graphcal-name $other_name;
+
+delete
+    $idea isa graphcal-idea;
+    $alias isa graphcal-alias;
+    $other_alias isa graphcal-alias;
+    $other_name isa graphcal-name;

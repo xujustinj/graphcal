@@ -1,0 +1,5 @@
+match
+    $t isa thing;
+
+delete
+    $t isa thing;

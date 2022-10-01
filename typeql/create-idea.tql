@@ -1,0 +1,3 @@
+insert
+    $idea isa graphcal-idea;
+    $alias ($idea) isa graphcal-alias, has graphcal-name "<name>";

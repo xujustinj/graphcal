@@ -1,0 +1,8 @@
+# Python environment
+/env/
+
+# in case you want to include your TypeDB distribution directly in this directory
+/typedb/
+
+# TypeDB Studio files
+.typedb-studio/

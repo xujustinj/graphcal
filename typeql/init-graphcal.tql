@@ -1,0 +1,10 @@
+define
+    graphcal-name sub attribute,
+        value string;
+
+    graphcal-idea sub entity,
+        plays graphcal-alias:idea;
+
+    graphcal-alias sub relation,
+        relates idea,
+        owns graphcal-name;

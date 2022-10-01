@@ -11,3 +11,7 @@ For now, it will start humble: a command line interface. From here, we can add
 1. graph visualization
 1. voice user interface
 1. brain-computer interface
+
+## Implementation
+
+GraphCal stores everything locally in [Vaticle TypeDB](https://vaticle.com/use-cases/knowledge-graphs), but there are features like relation multiplicity that we will need to build overtop.
