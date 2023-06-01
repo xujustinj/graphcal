@@ -9,6 +9,8 @@ This may be subject to change in the future.
 
 from dataclasses import dataclass, field
 import json
+import re
+from typing import Optional
 
 from dataclasses_json import dataclass_json
 
@@ -24,6 +26,8 @@ class Node:
     def __lt__(self, other: "Node") -> bool:
         assert isinstance(other, Node)
         return str(self.name) < str(other.name)
+
+NodeSet = set[Node]
 
 @dataclass_json
 @dataclass(frozen=True)
@@ -42,47 +46,91 @@ class Edge:
 
 @dataclass
 class KnowledgeGraph:
-    nodes: set[Node] = field(default_factory=set)
-    edges: set[Edge] = field(default_factory=set)
-    relations: set[Relation] = field(default_factory=set)
+    _nodes: set[Node] = field(default_factory=set)
+    _edges: set[Edge] = field(default_factory=set)
+    _relations: set[Relation] = field(default_factory=set)
+
+    # Add operations
 
     def add_node(self, v: Node, strict=False) -> "KnowledgeGraph":
         assert isinstance(v, Node)
         if strict:
-            assert v not in self.nodes
-        self.nodes.add(v)
+            assert v not in self._nodes
+        self._nodes.add(v)
         return self
 
     def add_edge(self, e: Edge, strict=False) -> "KnowledgeGraph":
         assert isinstance(e, Edge)
-        assert e.source in self.nodes
-        assert e.relation in self.relations
-        assert e.target in self.nodes
+        assert e.source in self._nodes
+        assert e.relation in self._relations
+        assert e.target in self._nodes
         if strict:
-            assert e not in self.edges
-        self.edges.add(e)
+            assert e not in self._edges
+        self._edges.add(e)
         return self
 
     def add_relation(self, r: Relation, strict=False) -> "KnowledgeGraph":
         assert isinstance(r, Relation)
         if strict:
-            assert r not in self.relations
-        self.relations.add(r)
+            assert r not in self._relations
+        self._relations.add(r)
         return self
+
+    # Query operations
+
+    def all(self) -> NodeSet:
+        return set(self._nodes)
+
+    def one(self, name: Name) -> NodeSet:
+        node = Node(name)
+        assert node in self._nodes
+        return {node}
+
+    def targets(
+        self,
+        sources: NodeSet,
+        relations: Optional[str | re.Pattern] = None
+    ) -> NodeSet:
+        if isinstance(relations, str):
+            relations = re.compile(relations)
+        return {
+            edge.target
+            for edge in self._edges
+            if edge.source in sources
+            and (relations is None or relations.match(edge.relation))
+        }
+
+    def sources(
+        self,
+        targets: NodeSet,
+        relations: Optional[str | re.Pattern] = None
+    ) -> NodeSet:
+        if isinstance(relations, str):
+            relations = re.compile(relations)
+        return {
+            edge.source
+            for edge in self._edges
+            if edge.target in targets
+            and (relations is None or relations.match(edge.relation))
+        }
+
+    # JSON serialization
 
     def to_dict(self) -> dict[str, list]:
         return {
-            "nodes": [node.to_dict() for node in sorted(self.nodes)],
-            "edges": [edge.to_dict() for edge in sorted(self.edges)],
-            "relations": sorted(self.relations),
+            "nodes": [node.to_dict() for node in sorted(self._nodes)],
+            "edges": [edge.to_dict() for edge in sorted(self._edges)],
+            "relations": sorted(self._relations),
         }
 
     def to_json(self) -> str:
         return json.dumps(self.to_dict())
 
+    # JSON deserialization
+
     @classmethod
     def from_dict(cls, d: dict) -> "KnowledgeGraph":
-        kg = KnowledgeGraph()
+        kg = cls()
         for node in d["nodes"]:
             kg.add_node(node, strict=True)
         for relation in d["relations"]:
