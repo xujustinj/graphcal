@@ -46,89 +46,89 @@ class Edge:
 
 @dataclass
 class KnowledgeGraph:
-    _nodes: set[Node] = field(default_factory=set)
-    _edges: set[Edge] = field(default_factory=set)
-    _relations: set[Relation] = field(default_factory=set)
+    nodes: set[Node] = field(default_factory=set)
+    edges: set[Edge] = field(default_factory=set)
+    relations: set[Relation] = field(default_factory=set)
 
     # Add operations
 
     def add_node(self, v: Node, strict=False) -> "KnowledgeGraph":
         assert isinstance(v, Node)
         if strict:
-            assert v not in self._nodes
-        self._nodes.add(v)
+            assert v not in self.nodes
+        self.nodes.add(v)
         return self
 
     def add_edge(self, e: Edge, strict=False) -> "KnowledgeGraph":
         assert isinstance(e, Edge)
-        assert e.source in self._nodes
-        assert e.relation in self._relations
-        assert e.target in self._nodes
+        assert e.source in self.nodes
+        assert e.relation in self.relations
+        assert e.target in self.nodes
         if strict:
-            assert e not in self._edges
-        self._edges.add(e)
+            assert e not in self.edges
+        self.edges.add(e)
         return self
 
     def add_relation(self, r: Relation, strict=False) -> "KnowledgeGraph":
         assert isinstance(r, Relation)
         if strict:
-            assert r not in self._relations
-        self._relations.add(r)
+            assert r not in self.relations
+        self.relations.add(r)
         return self
 
     # Remove operations
 
     def remove_node(self, v: Node, strict=False) -> "KnowledgeGraph":
         assert isinstance(v, Node)
-        for edge in self._edges:
+        for edge in self.edges:
             assert edge.source != v and edge.target != v
         if strict:
-            assert v in self._nodes
-            self._nodes.remove(v)
-        elif v in self._nodes:
-            self._nodes.remove(v)
+            assert v in self.nodes
+            self.nodes.remove(v)
+        elif v in self.nodes:
+            self.nodes.remove(v)
         return self
 
     def remove_edge(self, e: Edge, strict=False) -> "KnowledgeGraph":
         assert isinstance(e, Edge)
-        assert e.source in self._nodes
-        assert e.relation in self._relations
-        assert e.target in self._nodes
+        assert e.source in self.nodes
+        assert e.relation in self.relations
+        assert e.target in self.nodes
         if strict:
-            assert e not in self._edges
-            self._edges.remove(e)
-        elif e in self._edges:
-            self._edges.remove(e)
+            assert e not in self.edges
+            self.edges.remove(e)
+        elif e in self.edges:
+            self.edges.remove(e)
         return self
 
     def remove_relation(self, r: Relation, strict=False) -> "KnowledgeGraph":
         assert isinstance(r, Relation)
-        for edge in self._edges:
+        for edge in self.edges:
             assert edge.relation != r
         if strict:
-            assert r in self._relations
-            self._relations.remove(r)
-        elif r in self._relations:
-            self._relations.remove(r)
+            assert r in self.relations
+            self.relations.remove(r)
+        elif r in self.relations:
+            self.relations.remove(r)
         return self
 
     # Copy
 
     def copy(self) -> "KnowledgeGraph":
         return KnowledgeGraph(
-            _nodes=set(self._nodes),
-            _edges=set(self._edges),
-            _relations=set(self._relations),
+            nodes=set(self.nodes),
+            edges=set(self.edges),
+            relations=set(self.relations),
         )
 
     # Query operations
 
     def all(self) -> NodeSet:
-        return set(self._nodes)
+        return set(self.nodes)
 
     def one(self, name: Name) -> NodeSet:
         node = Node(name)
-        assert node in self._nodes
+        assert node in self.nodes
         return {node}
 
     def targets(
@@ -140,7 +140,7 @@ class KnowledgeGraph:
             relations = re.compile(relations)
         return {
             edge.target
-            for edge in self._edges
+            for edge in self.edges
             if edge.source in sources
             and (relations is None or relations.match(edge.relation))
         }
@@ -154,7 +154,7 @@ class KnowledgeGraph:
             relations = re.compile(relations)
         return {
             edge.source
-            for edge in self._edges
+            for edge in self.edges
             if edge.target in targets
             and (relations is None or relations.match(edge.relation))
         }
@@ -163,9 +163,9 @@ class KnowledgeGraph:
 
     def to_dict(self) -> dict[str, list]:
         return {
-            "nodes": [node.to_dict() for node in sorted(self._nodes)],
-            "edges": [edge.to_dict() for edge in sorted(self._edges)],
-            "relations": sorted(self._relations),
+            "nodes": [node.to_dict() for node in sorted(self.nodes)],
+            "edges": [edge.to_dict() for edge in sorted(self.edges)],
+            "relations": sorted(self.relations),
         }
 
     def to_json(self) -> str:
