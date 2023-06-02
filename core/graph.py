@@ -76,6 +76,51 @@ class KnowledgeGraph:
         self._relations.add(r)
         return self
 
+    # Remove operations
+
+    def remove_node(self, v: Node, strict=False) -> "KnowledgeGraph":
+        assert isinstance(v, Node)
+        for edge in self._edges:
+            assert edge.source != v and edge.target != v
+        if strict:
+            assert v in self._nodes
+            self._nodes.remove(v)
+        elif v in self._nodes:
+            self._nodes.remove(v)
+        return self
+
+    def remove_edge(self, e: Edge, strict=False) -> "KnowledgeGraph":
+        assert isinstance(e, Edge)
+        assert e.source in self._nodes
+        assert e.relation in self._relations
+        assert e.target in self._nodes
+        if strict:
+            assert e not in self._edges
+            self._edges.remove(e)
+        elif e in self._edges:
+            self._edges.remove(e)
+        return self
+
+    def remove_relation(self, r: Relation, strict=False) -> "KnowledgeGraph":
+        assert isinstance(r, Relation)
+        for edge in self._edges:
+            assert edge.relation != r
+        if strict:
+            assert r in self._relations
+            self._relations.remove(r)
+        elif r in self._relations:
+            self._relations.remove(r)
+        return self
+
+    # Copy
+
+    def copy(self) -> "KnowledgeGraph":
+        return KnowledgeGraph(
+            _nodes=set(self._nodes),
+            _edges=set(self._edges),
+            _relations=set(self._relations),
+        )
+
     # Query operations
 
     def all(self) -> NodeSet:
