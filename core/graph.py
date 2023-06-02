@@ -14,7 +14,7 @@ from typing import Optional
 
 from dataclasses_json import dataclass_json
 
-Token = bool | int | float | str
+Token = None | bool | int | float | str
 Name = tuple[Token, ...]
 Relation = str
 
@@ -36,8 +36,8 @@ class Edge:
     relation: Relation
     target: Node
 
-    def __lt__(self, other: "Node") -> bool:
-        assert isinstance(other, Node)
+    def __lt__(self, other: "Edge") -> bool:
+        assert isinstance(other, Edge)
         return (
             str(self.relation) < str(other.relation)
             or self.source < other.source
