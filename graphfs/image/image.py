@@ -4,6 +4,7 @@ from typing import Any
 from PIL import Image as PILImage, ExifTags as PILExifTags
 
 from graphfs.file import Value, File
+from graphfs.value import Camera, Time
 
 from .util import is_image
 
@@ -42,7 +43,7 @@ class ImageFile(File):
     def time(self) -> Value:
         datetime = self.exif.get("DateTime")
         assert datetime is None or isinstance(datetime, str)
-        return ("!!time", datetime)
+        return Time(datetime)
 
     @cached_property
     def camera(self) -> Value:
@@ -52,7 +53,7 @@ class ImageFile(File):
         model = self.exif.get("Model")
         assert model is None or isinstance(model, str)
 
-        return ("!!camera", make, model)
+        return Camera(make, model)
 
     @cached_property
     def properties(self) -> dict[str, Value]:

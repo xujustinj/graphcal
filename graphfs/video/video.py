@@ -4,6 +4,7 @@ from typing import Any
 from ffmpeg import probe
 
 from graphfs.file import Value, File
+from graphfs.value import DurationSeconds, Pixels, Time
 
 from .util import is_video, same
 
@@ -32,19 +33,19 @@ class VideoFile(File):
 
     @cached_property
     def duration_seconds(self) -> float:
-        return ("!!duration_seconds", same(float(s["duration"]) for s in self.video_streams))
+        return DurationSeconds(same(float(s["duration"]) for s in self.video_streams))
 
     @cached_property
     def creation_time(self) -> float:
-        return ("!!time", same(s["tags"]["creation_time"] for s in self.video_streams))
+        return Time(same(s["tags"]["creation_time"] for s in self.video_streams))
 
     @cached_property
     def width_pixels(self) -> int:
-        return ("!!pixels", same(int(s["width"]) for s in self.video_streams))
+        return Pixels(same(int(s["width"]) for s in self.video_streams))
 
     @cached_property
     def height_pixels(self) -> int:
-        return ("!!pixels", same(int(s["height"]) for s in self.video_streams))
+        return Pixels(same(int(s["height"]) for s in self.video_streams))
 
     @cached_property
     def properties(self) -> dict[str, Value]:
