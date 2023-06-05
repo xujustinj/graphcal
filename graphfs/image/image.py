@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any, Optional
+from typing import Any
 
 from PIL import Image as PILImage, ExifTags as PILExifTags
 
