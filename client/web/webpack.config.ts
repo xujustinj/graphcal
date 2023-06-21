@@ -34,7 +34,9 @@ const webpackConfig = (env): Configuration => ({
         }),
         new webpack.DefinePlugin({
             "process.env.PRODUCTION": env.production || !env.development,
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             "process.env.NAME": JSON.stringify(require("./package.json").name),
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             "process.env.VERSION": JSON.stringify(require("./package.json").version)
         }),
         new ForkTsCheckerWebpackPlugin(),
