@@ -1,0 +1,200 @@
+{
+  "nodes": [
+    {
+      "name": [
+        "!!model",
+        "GT-BT's rule-based baseline"
+      ]
+    },
+    {
+      "name": [
+        "!!model",
+        "CycleGT"
+      ]
+    },
+    {
+      "name": [
+        "!!model",
+        "CycleGT, supervised"
+      ]
+    },
+    {
+      "name": [
+        "!!model",
+        "CycleGT, unsupervised"
+      ]
+    },
+    {
+      "name": [
+        "!!model",
+        "GT-BT"
+      ]
+    },
+    {
+      "name": [
+        "!!model",
+        "GT-BT, composed noise"
+      ]
+    },
+    {
+      "name": [
+        "!!model",
+        "GT-BT, sampled noise"
+      ]
+    },
+    {
+      "name": [
+        "!!paper",
+        "An Unsupervised Joint System for Text Generation from Knowledge Graphs and Semantic Parsing"
+      ]
+    },
+    {
+      "name": [
+        "!!paper",
+        "CycleGT: Unsupervised Graph-to-Text and Text-to-Graph Generation via Cycle Training"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": {
+        "name": [
+          "!!model",
+          "CycleGT"
+        ]
+      },
+      "relation": "has_variant",
+      "target": {
+        "name": [
+          "!!model",
+          "CycleGT, supervised"
+        ]
+      }
+    },
+    {
+      "source": {
+        "name": [
+          "!!model",
+          "CycleGT"
+        ]
+      },
+      "relation": "has_variant",
+      "target": {
+        "name": [
+          "!!model",
+          "CycleGT, unsupervised"
+        ]
+      }
+    },
+    {
+      "source": {
+        "name": [
+          "!!paper",
+          "An Unsupervised Joint System for Text Generation from Knowledge Graphs and Semantic Parsing"
+        ]
+      },
+      "relation": "proposes",
+      "target": {
+        "name": [
+          "!!model",
+          "GT-BT's rule-based baseline"
+        ]
+      }
+    },
+    {
+      "source": {
+        "name": [
+          "!!model",
+          "GT-BT"
+        ]
+      },
+      "relation": "has_variant",
+      "target": {
+        "name": [
+          "!!model",
+          "GT-BT, sampled noise"
+        ]
+      }
+    },
+    {
+      "source": {
+        "name": [
+          "!!paper",
+          "An Unsupervised Joint System for Text Generation from Knowledge Graphs and Semantic Parsing"
+        ]
+      },
+      "relation": "proposes",
+      "target": {
+        "name": [
+          "!!model",
+          "GT-BT"
+        ]
+      }
+    },
+    {
+      "source": {
+        "name": [
+          "!!paper",
+          "An Unsupervised Joint System for Text Generation from Knowledge Graphs and Semantic Parsing"
+        ]
+      },
+      "relation": "proposes",
+      "target": {
+        "name": [
+          "!!model",
+          "GT-BT, composed noise"
+        ]
+      }
+    },
+    {
+      "source": {
+        "name": [
+          "!!paper",
+          "CycleGT: Unsupervised Graph-to-Text and Text-to-Graph Generation via Cycle Training"
+        ]
+      },
+      "relation": "proposes",
+      "target": {
+        "name": [
+          "!!model",
+          "CycleGT"
+        ]
+      }
+    },
+    {
+      "source": {
+        "name": [
+          "!!paper",
+          "CycleGT: Unsupervised Graph-to-Text and Text-to-Graph Generation via Cycle Training"
+        ]
+      },
+      "relation": "uses_baseline",
+      "target": {
+        "name": [
+          "!!model",
+          "GT-BT's rule-based baseline"
+        ]
+      }
+    },
+    {
+      "source": {
+        "name": [
+          "!!paper",
+          "CycleGT: Unsupervised Graph-to-Text and Text-to-Graph Generation via Cycle Training"
+        ]
+      },
+      "relation": "uses_baseline",
+      "target": {
+        "name": [
+          "!!model",
+          "GT-BT, sampled noise"
+        ]
+      }
+    }
+  ],
+  "relations": [
+    "has_variant",
+    "proposes",
+    "uses_baseline"
+  ]
+}
