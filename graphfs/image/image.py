@@ -3,7 +3,8 @@ from typing import Any
 
 from PIL import Image as PILImage, ExifTags as PILExifTags
 
-from graphfs.file import Value, File
+from core import Node
+from graphfs.file import File
 from graphfs.value import Camera, Time
 
 from .util import is_image
@@ -40,13 +41,13 @@ class ImageFile(File):
         return exif
 
     @cached_property
-    def time(self) -> Value:
+    def time(self) -> Node:
         datetime = self.exif.get("DateTime")
         assert datetime is None or isinstance(datetime, str)
         return Time(datetime)
 
     @cached_property
-    def camera(self) -> Value:
+    def camera(self) -> Node:
         make = self.exif.get("Make")
         assert make is None or isinstance(make, str)
 
@@ -56,7 +57,7 @@ class ImageFile(File):
         return Camera(make, model)
 
     @cached_property
-    def properties(self) -> dict[str, Value]:
+    def properties(self) -> dict[str, Node]:
         return {
             **super().properties,
             "is_taken_at_time": self.time,

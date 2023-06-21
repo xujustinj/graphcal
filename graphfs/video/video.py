@@ -3,7 +3,8 @@ from typing import Any
 
 from ffmpeg import probe
 
-from graphfs.file import Value, File
+from core import Node
+from graphfs.file import File
 from graphfs.value import DurationSeconds, Pixels, Time
 
 from .util import is_video, same
@@ -32,23 +33,23 @@ class VideoFile(File):
         ))
 
     @cached_property
-    def duration_seconds(self) -> float:
+    def duration_seconds(self) -> Node:
         return DurationSeconds(same(float(s["duration"]) for s in self.video_streams))
 
     @cached_property
-    def creation_time(self) -> float:
+    def creation_time(self) -> Node:
         return Time(same(s["tags"]["creation_time"] for s in self.video_streams))
 
     @cached_property
-    def width_pixels(self) -> int:
+    def width_pixels(self) -> Node:
         return Pixels(same(int(s["width"]) for s in self.video_streams))
 
     @cached_property
-    def height_pixels(self) -> int:
+    def height_pixels(self) -> Node:
         return Pixels(same(int(s["height"]) for s in self.video_streams))
 
     @cached_property
-    def properties(self) -> dict[str, Value]:
+    def properties(self) -> dict[str, Node]:
         return {
             **super().properties,
             "is_taken_at_time": self.creation_time,
