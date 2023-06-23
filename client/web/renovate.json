@@ -1,10 +1,17 @@
 {
   "semanticCommits": true,
   "requiredStatusChecks": null,
-  "packageRules": [{
-    "updateTypes": ["minor", "patch", "pin", "digest"],
-    "automerge": true
-  }],
+  "packageRules": [
+    {
+      "updateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "automerge": true
+    }
+  ],
   "extends": [
     "config:base"
   ]
